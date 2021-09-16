@@ -60,24 +60,41 @@ public final class Main {
       runSparkServer((int) options.valueOf("port"));
     }
 
-    // TODO: Add your REPL here!
     try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
       String input;
+      CsvStore csv = null;
       while ((input = br.readLine()) != null) {
         try {
           input = input.trim();
           String[] arguments = input.split(" ");
           //System.out.println(arguments[0]);
-          // TODO: complete your REPL by adding commands for addition "add" and subtraction
-          //  "subtract"
           MathBot mbot = new MathBot();
-          if (arguments[0].equals("add")) {
+          if (arguments[0].equals("stars")) {
+            csv = new CsvStore(arguments[1]);
+            System.out.println("Read " + csv.getNumStars() + " stars from " + arguments[1]);
+          }
+          else if (arguments[0].equals("naive_neighbors")) {
+            if (Integer.parseInt(arguments[1]) < 1) {
+              continue;
+            }
+            if (arguments.length == 5) {
+              System.out.print(
+                  csv.findFromPosition(
+                      Double.parseDouble(arguments[2]),
+                      Double.parseDouble(arguments[3]),
+                      Double.parseDouble(arguments[4]),
+                      Integer.parseInt(arguments[1])));
+            } else {
+              System.out.print(csv.findFromName(arguments[2], Integer.parseInt(arguments[1])));
+            }
+          } else if (arguments[0].equals("add")) {
             System.out.println(
                 mbot.add(Double.parseDouble(arguments[1]), Double.parseDouble(arguments[2])));
-          }
-          if (arguments[0].equals("subtract")) {
+          } else if (arguments[0].equals("subtract")) {
             System.out.println(
                 mbot.subtract(Double.parseDouble(arguments[1]), Double.parseDouble(arguments[2])));
+          } else {
+            System.out.println("ERROR: We couldn't process your input");
           }
         } catch (Exception e) {
           // e.printStackTrace();
