@@ -72,12 +72,18 @@ public final class Main {
           if (arguments[0].equals("stars")) {
             csv = new CsvStore(arguments[1]);
             System.out.println("Read " + csv.getNumStars() + " stars from " + arguments[1]);
-          }
-          else if (arguments[0].equals("naive_neighbors")) {
+          } else if (arguments[0].equals("naive_neighbors")) {
             if (Integer.parseInt(arguments[1]) < 1) {
               continue;
             }
-            if (arguments.length == 5) {
+            if (arguments[2].contains("\"")) {
+              String name = arguments[2];
+              for (int i = 3; i < arguments.length; i++) {
+                name += " " + arguments[i];
+              }
+              String strippedName = name.replaceAll("\"", "");
+              System.out.print(csv.findFromName(strippedName, Integer.parseInt(arguments[1])));
+            } else if (arguments.length == 5) {
               System.out.print(
                   csv.findFromPosition(
                       Double.parseDouble(arguments[2]),
@@ -85,7 +91,7 @@ public final class Main {
                       Double.parseDouble(arguments[4]),
                       Integer.parseInt(arguments[1])));
             } else {
-              System.out.print(csv.findFromName(arguments[2], Integer.parseInt(arguments[1])));
+              System.out.println("ERROR: We couldn't process your input");
             }
           } else if (arguments[0].equals("add")) {
             System.out.println(

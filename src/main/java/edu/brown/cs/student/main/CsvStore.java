@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class CsvStore {
   private ArrayList<Star> stars;
   private int numStars = 0;
+
   public CsvStore(String filepath) throws FileNotFoundException {
     stars = new ArrayList<Star>();
     Scanner sc = new Scanner(new File(filepath));
@@ -24,7 +25,7 @@ public class CsvStore {
         double xValue = Double.parseDouble(trSplit[2]);
         double yValue = Double.parseDouble(trSplit[3]);
         double zValue = Double.parseDouble(trSplit[4]);
-        Star toInsert = new Star(id, "\"" + name + "\"", xValue, yValue, zValue);
+        Star toInsert = new Star(id, name, xValue, yValue, zValue);
         stars.add(toInsert);
         numStars++;
       }
@@ -49,7 +50,7 @@ public class CsvStore {
     }
     Collections.sort(stars, new SortByDistance());
     String ret = "";
-    for (int i = 0; i < k; i++) {
+    for (int i = 0; i < k && i < stars.size(); i++) {
       ret += stars.get(i).getID() + "\n";
     }
     return ret;
@@ -58,12 +59,15 @@ public class CsvStore {
     if (k + 1 > this.numStars) {
       return "";
     }
-    Star startStar = null;
-    for (int i = 0; i < stars.size(); i++) {
-      Star curStar = stars.get(i);
-      if (curStar.getName().equals(name)) {
-        startStar = curStar;
+    Star startStar = new Star(-1, "", 0, 0, 0);
+    for (Star s : stars) {
+      if (s.getName().equals(name)) {
+        startStar = s;
+        break;
       }
+    }
+    if (startStar.getID() == -1) {
+      return "ERROR: name not found\n";
     }
     String unCut = findFromPosition(startStar.getX(), startStar.getY(), startStar.getZ(), k + 1);
     return unCut.substring(unCut.indexOf('\n') + 1);

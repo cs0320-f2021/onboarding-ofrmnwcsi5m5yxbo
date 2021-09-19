@@ -6,7 +6,7 @@ public class Star {
   private double xValue;
   private double yValue;
   private double zValue;
-  private double distance;
+  private double distance = Double.MAX_VALUE;
   public Star(int id, String name, double xValue, double yValue, double zValue) {
     this.id = id;
     this.name = name;
