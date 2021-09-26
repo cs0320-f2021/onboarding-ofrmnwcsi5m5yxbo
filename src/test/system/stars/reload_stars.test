@@ -1,0 +1,15 @@
+INPUT
+stars data/stars/ten-star.csv
+naive_neighbors 5 "Sol"
+stars data/stars/three-star.csv
+naive_neighbors 1 "Star One"
+OUTPUT
+Read 10 stars from data/stars/ten-star.csv
+70667
+71454
+71457
+87666
+118721
+Read 3 stars from data/stars/three-star.csv
+2
+END
